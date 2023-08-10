@@ -3,14 +3,14 @@ import 'package:clarim_diario/src/core/sqflite/banco.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DaoProfessor {
-  Future<bool> salvarAluno(Professor professor) async {
+  Future<bool> salvarProfessor(Professor professor) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO professor (nome) VALUES (?)';
     var linhasAfetadas = await db.rawInsert(sql, [professor.nome]);
     return linhasAfetadas > 0;
   }
 
-  Future<Professor> consultarAluno(int id) async {
+  Future<Professor> consultarProfessor(int id) async {
     late Database db;
     try {
       const sql = "SELECT * FROM professor WHERE id=?";
@@ -25,7 +25,7 @@ class DaoProfessor {
     } finally {}
   }
 
-  Future<List<Professor>> listarAlunoss() async {
+  Future<List<Professor>> listarProfessores() async {
     late Database db;
     try {
       const sql = 'SELECT * FROM professor';

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FormDiario extends StatefulWidget {
-  const FormDiario({super.key});
+class CadastroDiario extends StatefulWidget {
+  const CadastroDiario({super.key});
 
   @override
-  State<FormDiario> createState() => _FormDiarioState();
+  State<CadastroDiario> createState() => _CadastroDiarioState();
 }
 
-class _FormDiarioState extends State<FormDiario> {
+class _CadastroDiarioState extends State<CadastroDiario> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _conceitoController = TextEditingController();
@@ -19,11 +19,11 @@ class _FormDiarioState extends State<FormDiario> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: const Text('Diário de Aula'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 117, 255, 104),
+        backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -39,6 +39,12 @@ class _FormDiarioState extends State<FormDiario> {
                     decoration: const InputDecoration(
                       labelText: 'Nome do aluno',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe o nome do aluno';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -51,6 +57,12 @@ class _FormDiarioState extends State<FormDiario> {
                     decoration: const InputDecoration(
                       labelText: 'Conceito',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe o conceito';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -63,6 +75,12 @@ class _FormDiarioState extends State<FormDiario> {
                     decoration: const InputDecoration(
                       labelText: 'Frequência',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe a frequência';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -81,6 +99,7 @@ class _FormDiarioState extends State<FormDiario> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
+                  if (_formKey.currentState!.validate()) {}
                   //salvar no sqflite
                 },
                 child: const Text('Salvar'),
