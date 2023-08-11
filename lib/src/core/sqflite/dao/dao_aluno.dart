@@ -26,7 +26,7 @@ class DaoAluno {
     } finally {}
   }
 
-  Future<List<Aluno>> listarAlunoss() async {
+  Future<List<Aluno>> listarAlunos() async {
     late Database db;
     try {
       const sql = 'SELECT * FROM aluno';
@@ -42,5 +42,14 @@ class DaoAluno {
       throw Exception('classe DaoLocacao, método listar');
     } finally {}
   }
+
+  Future<bool> excluirAluno(int id) async {
+    Database db = await Conexao.abrirConexao();
+
+    const sql = 'DELETE * FROM aluno WHERE id =?';
+    int resultados = await db.rawDelete(sql, [id]);
+    return resultados > 0;
+  }
+
 }
 

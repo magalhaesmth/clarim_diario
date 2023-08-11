@@ -2,16 +2,13 @@ final criarBanco = [
   '''
     CREATE TABLE aluno (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        conceito TEXT NOT NULL
-        frequencia TEXT NOT NULL,
-        feedback TEXT NOT NULL
+        nome TEXT NOT NULL
     )
   ''',
   '''
     CREATE TABLE professor (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
+        nome TEXT NOT NULL
     )
   ''',
   '''CREATE TABLE diario (

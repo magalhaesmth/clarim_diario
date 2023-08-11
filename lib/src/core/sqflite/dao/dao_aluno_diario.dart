@@ -10,9 +10,9 @@ class DaoAluno {
 
   List<DiarioAula> diarios = [];
 
-  Future<bool> salvarDiarioAula(DiarioAula diarioAula) async {
+  Future<bool> salvarAlunoDiario(DiarioAula diarioAula) async {
     Database db = await Conexao.abrirConexao();
-    const sql = 'INSERT INTO diario (conteudo,observacoes,data,professor_id) VALUES (?,?,?,?)';
+    const sql = 'INSERT INTO alunoDiario (conceito,observacoes,data,professor_id) VALUES (?,?,?,?)';
     var linhasAfetadas = await db.rawInsert(sql, [diarioAula.conteudo, diarioAula.observacoes,diarioAula.data.toString(),diarioAula.professor.id]);
     return linhasAfetadas > 0;
   }
