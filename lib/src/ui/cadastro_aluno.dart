@@ -26,7 +26,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Text('Diário de Aula'),
+        title: const Text('Alunos'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
@@ -35,7 +35,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
         if(!dados.hasData) {
                     return const CircularProgressIndicator();
         } else{
-          var _alunos = dados.data!;
+          List<dynamic> _alunos = dados.data!;
             return ListView.builder(
               itemCount: _alunos.length,
               itemBuilder: (context, index) {
@@ -48,10 +48,10 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         horizontal: 20.0, vertical: 10.0),
                     title: Text(
                       _alunos[index].nome,
-                      style: TextStyle(fontSize: 18.0),
+                      style: const TextStyle(fontSize: 18.0),
                     ),
                     trailing: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete,
                         color: Colors.red,
                       ),
@@ -102,7 +102,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             setState(() {
-                                                        AlunoService().salvarAluno(
+                                  AlunoService().salvarAluno(
                                   Aluno(nome: _nomeController.text));
                               _alunos.add(Aluno(nome: _nomeController.text));
                               _nomeController.clear();

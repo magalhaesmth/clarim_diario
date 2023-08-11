@@ -6,7 +6,7 @@ import 'package:clarim_diario/src/core/sqflite/dao/dao_professor.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 
-class DaoAluno {
+class DaoDiario {
 
   List<DiarioAula> diarios = [];
 

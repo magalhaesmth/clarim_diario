@@ -2,7 +2,7 @@ import 'package:clarim_diario/src/core/entity/aluno.dart';
 
 import '../sqflite/dao/dao_aluno.dart';
 
-// class AlunoService {
+class AlunoService {
 
   salvarAluno(Aluno aluno){
     DaoAluno().salvarAluno(aluno);
@@ -15,5 +15,4 @@ import '../sqflite/dao/dao_aluno.dart';
   listarAluno(){
     return DaoAluno().listarAlunos();
   }
-
-// }
+}

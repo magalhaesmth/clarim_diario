@@ -60,9 +60,20 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                   subtitle: Text(
                     'Observações: ${diario.observacoes!}\nData Cadastro: ${utils.formatarDataDDMMYYYY(diario.data)}',
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _excluirDiario(index),
+                  trailing: SizedBox(
+                    width: 100,
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => _excluirDiario(index),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.share),
+                          onPressed: () => {},
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -120,7 +131,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                             );
 
                             _adicionarDiario(diario);
-                            
+
                             //salvar diário no sqflite
 
                             Navigator.pop(context);
