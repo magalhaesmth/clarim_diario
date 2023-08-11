@@ -1,5 +1,6 @@
 import 'package:clarim_diario/src/ui/cadastro_aluno.dart';
 import 'package:clarim_diario/src/ui/cadastro_diario.dart';
+import 'package:clarim_diario/src/ui/cadastro_diario_test.dart';
 import 'package:flutter/material.dart';
 
 class TelaInicial extends StatefulWidget {
@@ -15,6 +16,7 @@ class _TelaInicialState extends State<TelaInicial> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clarim Diário'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -35,7 +37,7 @@ class _TelaInicialState extends State<TelaInicial> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CadastroDiario(),
+                    builder: (context) => const CadastroDiarioAula(),
                   ),
                 );
               },
