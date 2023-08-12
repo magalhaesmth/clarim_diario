@@ -3,7 +3,6 @@ import 'package:clarim_diario/src/core/sqflite/banco.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DaoAluno {
-
   Future<bool> salvarAluno(Aluno aluno) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO aluno (nome) VALUES (?)';
@@ -50,6 +49,4 @@ class DaoAluno {
     int resultados = await db.rawDelete(sql, [id]);
     return resultados > 0;
   }
-
 }
-

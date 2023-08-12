@@ -2,7 +2,6 @@ import 'package:clarim_diario/src/core/entity/aluno.dart';
 import 'package:flutter/material.dart';
 
 import '../core/service/aluno_service.dart';
-import '../core/sqflite/dao/dao_aluno.dart';
 
 class CadastroAluno extends StatefulWidget {
   const CadastroAluno({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class CadastroAluno extends StatefulWidget {
 
 class _CadastroAlunoState extends State<CadastroAluno> {
   final List<Aluno> _alunos = [];
-  TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
 
   void _excluirAluno(int index) {
     setState(() {
@@ -30,14 +29,15 @@ class _CadastroAlunoState extends State<CadastroAluno> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
-      body: FutureBuilder(future: AlunoService().listarAluno(), 
-      builder: (context, AsyncSnapshot<List<Aluno>> dados) {
-        if(!dados.hasData) {
-                    return const CircularProgressIndicator();
-        } else{
-          List<dynamic> _alunos = dados.data!;
+      body: FutureBuilder(
+        future: AlunoService().listarAluno(),
+        builder: (context, AsyncSnapshot<List<Aluno>> dados) {
+          if (!dados.hasData) {
+            return const CircularProgressIndicator();
+          } else {
+            List<dynamic> alunos = dados.data!;
             return ListView.builder(
-              itemCount: _alunos.length,
+              itemCount: alunos.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 2.0,
@@ -45,10 +45,14 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                       horizontal: 10.0, vertical: 6.0),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10.0),
+                      horizontal: 20.0,
+                      vertical: 10.0,
+                    ),
                     title: Text(
-                      _alunos[index].nome,
-                      style: const TextStyle(fontSize: 18.0),
+                      alunos[index].nome,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                      ),
                     ),
                     trailing: IconButton(
                       icon: const Icon(
@@ -63,9 +67,9 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                 );
               },
             );
-        }
-      },
-    ),
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -102,7 +106,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             setState(() {
-                                  AlunoService().salvarAluno(
+                              AlunoService().salvarAluno(
                                   Aluno(nome: _nomeController.text));
                               _alunos.add(Aluno(nome: _nomeController.text));
                               _nomeController.clear();

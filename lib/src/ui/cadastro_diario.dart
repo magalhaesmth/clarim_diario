@@ -1,4 +1,9 @@
+import 'package:clarim_diario/src/core/entity/diario_aula.dart';
+import 'package:clarim_diario/src/core/entity/professor.dart';
+import 'package:clarim_diario/src/core/utils.dart';
 import 'package:flutter/material.dart';
+
+import 'cadastro_diario_aula.dart';
 
 class CadastroDiario extends StatefulWidget {
   const CadastroDiario({super.key});
@@ -8,105 +13,99 @@ class CadastroDiario extends StatefulWidget {
 }
 
 class _CadastroDiarioState extends State<CadastroDiario> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _conceitoController = TextEditingController();
-  final TextEditingController _frequenciaController = TextEditingController();
-  final TextEditingController _feedbackController = TextEditingController();
   final TextEditingController _conteudoController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
+  var utils = Utils();
+
+  var diarioAula = <DiarioAula>[];
+
+  void _adicionarDiario(DiarioAula diario) {
+    setState(() {
+      diarioAula.add(diario);
+      _conteudoController.clear();
+      _observacoesController.clear();
+    });
+  }
+
+  void _excluirDiario(int index) {
+    setState(() {
+      diarioAula.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Text('Diário de Aula'),
+        title: const Text('Diários'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: TextFormField(
-                    controller: _nomeController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nome do aluno',
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: diarioAula.length,
+              itemBuilder: (context, index) {
+                var diarioAtual = diarioAula[index];
+
+                var diario = DiarioAula(
+                  conteudo: diarioAtual.conteudo,
+                  observacoes: diarioAtual.observacoes,
+                  data: diarioAtual.data,
+                  professor: Professor(nome: ''),
+                );
+
+                return Card(
+                  elevation: 2.0,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 6.0,
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 10.0,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe o nome do aluno';
-                      }
-                      return null;
+                    title: Text(
+                      diario.conteudo,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text(
+                        'Obs: ${diario.observacoes}\nData: ${utils.formatarDataDDMMYYYY(diario.data)}'),
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => _excluirDiario(index),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.share),
+                            onPressed: () => {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CadastroDiarioAula(),
+                        ),
+                      );
                     },
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: TextFormField(
-                    controller: _conceitoController,
-                    decoration: const InputDecoration(
-                      labelText: 'Conceito',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe o conceito';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: TextFormField(
-                    controller: _frequenciaController,
-                    decoration: const InputDecoration(
-                      labelText: 'Frequência',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Informe a frequência';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: TextFormField(
-                    controller: _feedbackController,
-                    decoration: const InputDecoration(
-                      labelText: 'Feedback',
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
-                  //salvar no sqflite
-                },
-                child: const Text('Salvar'),
-              ),
-            ],
-          ),
-        ),
+                );
+              },
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -125,38 +124,53 @@ class _CadastroDiarioState extends State<CadastroDiario> {
               child: Form(
                 key: formKey,
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _conteudoController,
-                        decoration: const InputDecoration(
-                          labelText: 'Conteúdo',
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _conteudoController,
+                          decoration: const InputDecoration(
+                            labelText: 'Conteúdo',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Informe o conteúdo do dia';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o conteúdo do dia';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 15.0),
-                      TextFormField(
-                        controller: _observacoesController,
-                        decoration: const InputDecoration(
-                          labelText: 'Observações',
+                        const SizedBox(height: 15.0),
+                        TextFormField(
+                          controller: _observacoesController,
+                          decoration: const InputDecoration(
+                            labelText: 'Observações',
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            Navigator.pop(context);
-                          }
-                          //salvar no sqflite
-                        },
-                        child: const Text('Criar Diário'),
-                      ),
-                    ],
+                        const SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              var diario = DiarioAula(
+                                conteudo: _conteudoController.text,
+                                observacoes: _observacoesController.text,
+                                data: DateTime.now(),
+                                professor: Professor(nome: ''),
+                              );
+
+                              _adicionarDiario(diario);
+
+                              //salvar diário no sqflite
+
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text('Criar Diário'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
