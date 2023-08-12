@@ -1,4 +1,3 @@
-
 import 'package:clarim_diario/src/core/infra/sqflite/script.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,8 +7,8 @@ class Conexao {
   static Database? _db;
 
   static Future<Database> abrirConexao() async {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
+    //sqfliteFfiInit();
+    //databaseFactory = databaseFactoryFfi;
     if (_db == null) {
       String caminho = join(await getDatabasesPath(), 'banco.db');
       // deleteDatabase(caminho);

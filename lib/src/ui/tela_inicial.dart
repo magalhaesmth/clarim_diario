@@ -1,5 +1,4 @@
 import 'package:clarim_diario/src/ui/cadastro_aluno.dart';
-import 'package:clarim_diario/src/ui/cadastro_diario.dart';
 import 'package:clarim_diario/src/ui/cadastro_diario_test.dart';
 import 'package:flutter/material.dart';
 
