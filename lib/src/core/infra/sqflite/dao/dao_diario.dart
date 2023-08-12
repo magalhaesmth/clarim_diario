@@ -1,15 +1,15 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
-import 'package:clarim_diario/src/core/entity/diario_aula.dart';
-import 'package:clarim_diario/src/core/entity/professor.dart';
-import 'package:clarim_diario/src/core/sqflite/banco.dart';
-import 'package:clarim_diario/src/core/sqflite/dao/dao_professor.dart';
+import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_diario.dart';
+import 'package:clarim_diario/src/core/domain/entity/diario_aula.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/banco.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_professor.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 
-class DaoDiario {
+class DaoDiario implements IDaoDiario{
 
   List<DiarioAula> diarios = [];
 
+  @override
   Future<bool> salvarDiarioAula(DiarioAula diarioAula) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO diario (conteudo,observacoes,data,professor_id) VALUES (?,?,?,?)';
@@ -17,6 +17,7 @@ class DaoDiario {
     return linhasAfetadas > 0;
   }
 
+  @override
   Future<DiarioAula> consultarDiarioAula(int id) async {
     late Database db;
     try {
@@ -32,6 +33,7 @@ class DaoDiario {
     } finally {}
   }
 
+  @override
   Future<List<DiarioAula>> listarDiariosAula() async {
     late Database db;
     try {

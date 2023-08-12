@@ -1,5 +1,8 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
+import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_aluno.dart';
+import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno.dart';
 import 'package:flutter/material.dart';
+import '../core/aplication/use_case/aluno_use_case.dart';
 
 import '../core/service/aluno_service.dart';
 
@@ -13,6 +16,7 @@ class CadastroAluno extends StatefulWidget {
 class _CadastroAlunoState extends State<CadastroAluno> {
   final List<Aluno> _alunos = [];
   final TextEditingController _nomeController = TextEditingController();
+  IDaoAluno daoAluno = DaoAluno();
 
   void _excluirAluno(int index) {
     setState(() {
@@ -30,7 +34,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
       body: FutureBuilder(
-        future: AlunoService().listarAluno(),
+        future: AlunoUseCase().listarAluno(daoAluno),
         builder: (context, AsyncSnapshot<List<Aluno>> dados) {
           if (!dados.hasData) {
             return const CircularProgressIndicator();
@@ -106,8 +110,8 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             setState(() {
-                              AlunoService().salvarAluno(
-                                  Aluno(nome: _nomeController.text));
+                              AlunoUseCase().salvarAluno(
+                                  Aluno(nome: _nomeController.text), daoAluno);
                               _alunos.add(Aluno(nome: _nomeController.text));
                               _nomeController.clear();
                               Navigator.pop(context);

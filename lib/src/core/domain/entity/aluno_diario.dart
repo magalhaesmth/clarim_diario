@@ -1,5 +1,5 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
-import 'package:clarim_diario/src/core/entity/diario_aula.dart';
+import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
+import 'package:clarim_diario/src/core/domain/entity/diario_aula.dart';
 
 class AlunoDiario {
   late dynamic id;
