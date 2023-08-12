@@ -1,6 +1,6 @@
-import 'package:clarim_diario/src/core/entity/diario_aula.dart';
-import 'package:clarim_diario/src/core/entity/professor.dart';
-import 'package:clarim_diario/src/core/utils.dart';
+import 'package:clarim_diario/src/core/domain/entity/diario_aula.dart';
+import 'package:clarim_diario/src/core/domain/entity/professor.dart';
+import 'package:clarim_diario/src/core/infra/utils.dart';
 import 'package:flutter/material.dart';
 
 class CadastroDiarioAula extends StatefulWidget {

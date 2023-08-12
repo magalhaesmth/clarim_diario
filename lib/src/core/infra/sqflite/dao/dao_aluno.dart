@@ -1,9 +1,10 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
-import 'package:clarim_diario/src/core/sqflite/banco.dart';
+import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_aluno.dart';
+import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/banco.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DaoAluno {
-
+class DaoAluno implements IDaoAluno {
+  @override
   Future<bool> salvarAluno(Aluno aluno) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO aluno (nome) VALUES (?)';
@@ -11,6 +12,7 @@ class DaoAluno {
     return linhasAfetadas > 0;
   }
 
+  @override
   Future<Aluno> consultarAluno(int id) async {
     late Database db;
     try {
@@ -26,6 +28,7 @@ class DaoAluno {
     } finally {}
   }
 
+  @override
   Future<List<Aluno>> listarAlunos() async {
     late Database db;
     try {
@@ -43,6 +46,7 @@ class DaoAluno {
     } finally {}
   }
 
+  @override
   Future<bool> excluirAluno(int id) async {
     Database db = await Conexao.abrirConexao();
 
@@ -50,6 +54,4 @@ class DaoAluno {
     int resultados = await db.rawDelete(sql, [id]);
     return resultados > 0;
   }
-
 }
-

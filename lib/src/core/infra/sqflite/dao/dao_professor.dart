@@ -1,8 +1,10 @@
-import 'package:clarim_diario/src/core/entity/professor.dart';
-import 'package:clarim_diario/src/core/sqflite/banco.dart';
+import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_professor.dart';
+import 'package:clarim_diario/src/core/domain/entity/professor.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/banco.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DaoProfessor {
+class DaoProfessor implements IDaoProfessor {
+  @override
   Future<bool> salvarProfessor(Professor professor) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO professor (nome) VALUES (?)';
@@ -10,6 +12,7 @@ class DaoProfessor {
     return linhasAfetadas > 0;
   }
 
+  @override
   Future<Professor> consultarProfessor(int id) async {
     late Database db;
     try {
@@ -25,6 +28,7 @@ class DaoProfessor {
     } finally {}
   }
 
+  @override
   Future<List<Professor>> listarProfessores() async {
     late Database db;
     try {

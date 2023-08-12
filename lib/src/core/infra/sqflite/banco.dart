@@ -1,5 +1,5 @@
 
-import 'package:clarim_diario/src/core/sqflite/script.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/script.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';

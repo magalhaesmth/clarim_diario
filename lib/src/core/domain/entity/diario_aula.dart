@@ -1,4 +1,4 @@
-import 'package:clarim_diario/src/core/entity/professor.dart';
+import 'package:clarim_diario/src/core/domain/entity/professor.dart';
 
 class DiarioAula {
   late dynamic id;
