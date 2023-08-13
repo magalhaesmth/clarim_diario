@@ -1,7 +1,7 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
-import 'package:clarim_diario/src/core/entity/aluno_diario.dart';
 import 'package:clarim_diario/src/ui/dropdown_aluno.dart';
 import 'package:flutter/material.dart';
+
+import '../core/domain/entity/aluno.dart';
 
 class CadastroDiarioAula extends StatefulWidget {
   const CadastroDiarioAula({super.key});

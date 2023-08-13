@@ -1,6 +1,7 @@
 import 'package:clarim_diario/src/ui/cadastro_aluno.dart';
-import 'package:clarim_diario/src/ui/cadastro_diario_test.dart';
 import 'package:flutter/material.dart';
+
+import 'cadastro_diario.dart';
 
 class TelaInicial extends StatefulWidget {
   const TelaInicial({super.key});

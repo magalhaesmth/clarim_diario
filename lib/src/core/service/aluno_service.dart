@@ -1,6 +1,5 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
-
-import '../sqflite/dao/dao_aluno.dart';
+import '../domain/entity/aluno.dart';
+import '../infra/sqflite/dao/dao_aluno.dart';
 
 class AlunoService {
   var dao = DaoAluno();
@@ -15,5 +14,9 @@ class AlunoService {
 
   listarAluno() {
     return dao.listarAlunos();
+  }
+
+  excluirAluno(int id) {
+    return dao.excluirAluno(id);
   }
 }

@@ -1,5 +1,6 @@
-import 'package:clarim_diario/src/core/entity/aluno.dart';
 import 'package:flutter/material.dart';
+
+import '../core/domain/entity/aluno.dart';
 
 class DropdownAluno extends StatefulWidget {
   var alunos = <Aluno>[];

@@ -13,4 +13,8 @@ class AlunoUseCase {
   listarAluno(IDaoAluno iDaoAluno) {
     return iDaoAluno.listarAlunos();
   }
+
+  excluirAluno(int id, IDaoAluno iDaoAluno) {
+    iDaoAluno.excluirAluno(id);
+  }
 }

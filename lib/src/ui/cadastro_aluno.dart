@@ -2,9 +2,8 @@ import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_al
 import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
 import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno.dart';
 import 'package:flutter/material.dart';
-import '../core/aplication/use_case/aluno_use_case.dart';
 
-import '../core/service/aluno_service.dart';
+import '../core/aplication/use_case/aluno_use_case.dart';
 
 class CadastroAluno extends StatefulWidget {
   const CadastroAluno({Key? key}) : super(key: key);
@@ -39,10 +38,18 @@ class _CadastroAlunoState extends State<CadastroAluno> {
           if (!dados.hasData) {
             return const CircularProgressIndicator();
           } else {
-            List<dynamic> alunos = dados.data!;
+            List<Aluno> alunos = dados.data!;
+
             return ListView.builder(
               itemCount: alunos.length,
               itemBuilder: (context, index) {
+                var alunoAtual = alunos[index];
+
+                var aluno = Aluno(
+                  id: alunoAtual.id,
+                  nome: alunoAtual.nome,
+                );
+
                 return Card(
                   elevation: 2.0,
                   margin: const EdgeInsets.symmetric(
@@ -53,7 +60,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                       vertical: 10.0,
                     ),
                     title: Text(
-                      alunos[index].nome,
+                      aluno.nome,
                       style: const TextStyle(
                         fontSize: 18.0,
                       ),
@@ -65,6 +72,9 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                       ),
                       onPressed: () {
                         _excluirAluno(index);
+
+                        //TODO ainda falta fazer funciona a exlusão
+                        daoAluno.excluirAluno(aluno.id);
                       },
                     ),
                   ),
@@ -91,36 +101,42 @@ class _CadastroAlunoState extends State<CadastroAluno> {
               child: Form(
                 key: formKey,
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _nomeController,
-                        decoration: const InputDecoration(
-                          labelText: 'Nome do Aluno',
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
+                    ),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _nomeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Nome do Aluno',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Informe o nome do aluno';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Informe o nome do aluno';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            setState(() {
-                              AlunoUseCase().salvarAluno(
-                                  Aluno(nome: _nomeController.text), daoAluno);
-                              _alunos.add(Aluno(nome: _nomeController.text));
-                              _nomeController.clear();
-                              Navigator.pop(context);
-                            });
-                          }
-                        },
-                        child: const Text('Cadastrar Aluno'),
-                      ),
-                    ],
+                        const SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              setState(() {
+                                AlunoUseCase().salvarAluno(
+                                    Aluno(nome: _nomeController.text),
+                                    daoAluno);
+                                _alunos.add(Aluno(nome: _nomeController.text));
+                                _nomeController.clear();
+                                Navigator.pop(context);
+                              });
+                            }
+                          },
+                          child: const Text('Cadastrar Aluno'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

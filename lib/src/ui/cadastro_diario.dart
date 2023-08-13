@@ -1,8 +1,8 @@
-import 'package:clarim_diario/src/core/entity/diario_aula.dart';
-import 'package:clarim_diario/src/core/entity/professor.dart';
-import 'package:clarim_diario/src/core/utils.dart';
 import 'package:flutter/material.dart';
 
+import '../core/domain/entity/diario_aula.dart';
+import '../core/domain/entity/professor.dart';
+import '../core/infra/utils.dart';
 import 'cadastro_diario_aula.dart';
 
 class CadastroDiario extends StatefulWidget {
@@ -82,11 +82,17 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                       child: Row(
                         children: <Widget>[
                           IconButton(
-                            icon: const Icon(Icons.delete),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
                             onPressed: () => _excluirDiario(index),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.share),
+                            icon: const Icon(
+                              Icons.share,
+                              color: Colors.blue,
+                            ),
                             onPressed: () => {},
                           ),
                         ],
