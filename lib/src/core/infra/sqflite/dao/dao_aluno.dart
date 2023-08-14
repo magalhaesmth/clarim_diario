@@ -50,7 +50,7 @@ class DaoAluno implements IDaoAluno {
   Future<bool> excluirAluno(int id) async {
     Database db = await Conexao.abrirConexao();
 
-    const sql = 'DELETE * FROM aluno WHERE id =?';
+    const sql = 'DELETE FROM aluno WHERE id =?';
     int resultados = await db.rawDelete(sql, [id]);
     return resultados > 0;
   }

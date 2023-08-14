@@ -170,6 +170,8 @@ class _CadastroDiarioState extends State<CadastroDiario> {
 
                               //salvar diário no sqflite
 
+                              
+
                               Navigator.pop(context);
                             }
                           },

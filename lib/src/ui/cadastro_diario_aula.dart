@@ -1,3 +1,4 @@
+import 'package:clarim_diario/src/core/infra/ddm/ddm_aluno.dart';
 import 'package:clarim_diario/src/ui/dropdown_aluno.dart';
 import 'package:flutter/material.dart';
 
@@ -18,12 +19,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
   final _dropdownController = TextEditingController();
 
   //TODO fazer com que seja pego os valores do banco
-  var alunos = <Aluno>[
-    Aluno(id: '1', nome: 'Andrey'),
-    Aluno(id: '2', nome: 'Eduardo'),
-    Aluno(id: '3', nome: 'Matheus'),
-    Aluno(id: '4', nome: 'Francisco'),
-  ];
+  var alunos = DDMAluno().listarAlunos();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +40,6 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                 child: Align(
                   alignment: Alignment.center,
                   child: DropdownAluno(
-                    alunos: alunos,
                     validator: (value) {
                       if (value == null) {
                         return 'Selecione uma opção!';

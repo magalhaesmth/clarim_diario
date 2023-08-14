@@ -1,5 +1,6 @@
 import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_aluno.dart';
 import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
+import 'package:clarim_diario/src/core/infra/ddm/ddm_aluno.dart';
 import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +17,6 @@ class _CadastroAlunoState extends State<CadastroAluno> {
   final List<Aluno> _alunos = [];
   final TextEditingController _nomeController = TextEditingController();
   IDaoAluno daoAluno = DaoAluno();
-
-  void _excluirAluno(int index) {
-    setState(() {
-      _alunos.removeAt(index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +66,11 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        _excluirAluno(index);
+                        //_excluirAluno(aluno.id);
 
                         //TODO ainda falta fazer funciona a exlusão
-                        daoAluno.excluirAluno(aluno.id);
+                        DDMAluno().excluirAluno(aluno.id);
+                        setState(() {});
                       },
                     ),
                   ),
