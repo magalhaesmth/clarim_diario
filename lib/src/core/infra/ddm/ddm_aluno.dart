@@ -23,4 +23,9 @@ class DDMAluno implements IEntradaAluno {
   excluirAluno(int id) {
     useCase.excluirAluno(id, daoAluno);
   }
+
+  @override
+  consultarAluno(int id) {
+    return useCase.consultarAluno(id, daoAluno);
+  }
 }

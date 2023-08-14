@@ -3,5 +3,7 @@ abstract class IEntradaAluno {
 
   listarAlunos();
 
+  consultarAluno(int id);
+
   excluirAluno(int id);
 }
