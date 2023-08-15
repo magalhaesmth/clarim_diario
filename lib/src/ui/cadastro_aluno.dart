@@ -66,9 +66,6 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        //_excluirAluno(aluno.id);
-
-                        //TODO ainda falta fazer funciona a exlusão
                         DDMAluno().excluirAluno(aluno.id);
                         setState(() {});
                       },

@@ -13,4 +13,8 @@ class DiarioUseCase {
   listarDiarios(IDaoDiario iDaoDiario) {
     return iDaoDiario.listarDiariosAula();
   }
+
+  excluirDiario(int id, IDaoDiario iDaoDiario) {
+    iDaoDiario.excluirDiario(id);
+  }
 }

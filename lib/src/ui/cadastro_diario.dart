@@ -1,3 +1,6 @@
+import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_diario.dart';
+import 'package:clarim_diario/src/core/aplication/use_case/diario_use_case.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_diario.dart';
 import 'package:flutter/material.dart';
 
 import '../core/domain/entity/diario_aula.dart';
@@ -16,22 +19,7 @@ class _CadastroDiarioState extends State<CadastroDiario> {
   final TextEditingController _conteudoController = TextEditingController();
   final TextEditingController _observacoesController = TextEditingController();
   var utils = Utils();
-
-  var diarioAula = <DiarioAula>[];
-
-  void _adicionarDiario(DiarioAula diario) {
-    setState(() {
-      diarioAula.add(diario);
-      _conteudoController.clear();
-      _observacoesController.clear();
-    });
-  }
-
-  void _excluirDiario(int index) {
-    setState(() {
-      diarioAula.removeAt(index);
-    });
-  }
+  IDaoDiario iDaoDiario = DaoDiario();
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +30,27 @@ class _CadastroDiarioState extends State<CadastroDiario> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: diarioAula.length,
+      body: FutureBuilder(
+        future: DiarioUseCase().listarDiarios(iDaoDiario),
+        builder: (context, AsyncSnapshot<List<DiarioAula>> dados) {
+          if (!dados.hasData) {
+            return const CircularProgressIndicator();
+          } else {
+            var diarios = dados.data!;
+
+            return ListView.builder(
+              itemCount: diarios.length,
               itemBuilder: (context, index) {
-                var diarioAtual = diarioAula[index];
+                var diarioAtual = diarios[index];
 
                 var diario = DiarioAula(
                   conteudo: diarioAtual.conteudo,
                   observacoes: diarioAtual.observacoes,
                   data: diarioAtual.data,
-                  professor: Professor(nome: ''),
+                  professor: Professor(
+                    id: diarioAtual.professor.id,
+                    nome: diarioAtual.professor.nome,
+                  ),
                 );
 
                 return Card(
@@ -76,7 +72,8 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                       ),
                     ),
                     subtitle: Text(
-                        'Obs: ${diario.observacoes}\nData: ${utils.formatarDataDDMMYYYY(diario.data)}'),
+                      'Obs: ${diario.observacoes}\nData: ${utils.formatarDataDDMMYYYY(diario.data)}',
+                    ),
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
@@ -86,7 +83,9 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                               Icons.delete,
                               color: Colors.red,
                             ),
-                            onPressed: () => _excluirDiario(index),
+                            onPressed: () => {
+                              //TODO fazer com que antes de excluir o diário, seja excluído o diário de aula
+                            },
                           ),
                           IconButton(
                             icon: const Icon(
@@ -109,9 +108,9 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                   ),
                 );
               },
-            ),
-          )
-        ],
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -163,15 +162,16 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                                 conteudo: _conteudoController.text,
                                 observacoes: _observacoesController.text,
                                 data: DateTime.now(),
-                                professor: Professor(nome: ''),
+                                professor: Professor(
+                                  id: 1,
+                                  nome: '',
+                                ),
                               );
 
-                              _adicionarDiario(diario);
+                              DiarioUseCase().salvarDiario(diario, iDaoDiario);
 
-                              //salvar diário no sqflite
-
-                              
-
+                              _conteudoController.clear();
+                              _observacoesController.clear();
                               Navigator.pop(context);
                             }
                           },

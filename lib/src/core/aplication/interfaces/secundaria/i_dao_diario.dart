@@ -6,4 +6,6 @@ abstract class IDaoDiario {
   Future<DiarioAula> consultarDiarioAula(int id);
 
   Future<List<DiarioAula>> listarDiariosAula();
+
+  Future<bool> excluirDiario(int id);
 }

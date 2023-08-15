@@ -30,7 +30,8 @@ final criarBanco = [
         FOREIGN KEY(aluno_id) REFERENCES aluno(id),
         FOREIGN KEY(diario_id) REFERENCES diario(id)
     )
-  '''
+  ''',
+  '''INSERT INTO professor (nome) VALUES ('Helio')'''
 ];
 
 //Banco finalizado
