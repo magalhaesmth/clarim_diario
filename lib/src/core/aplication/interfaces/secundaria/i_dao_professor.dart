@@ -6,4 +6,6 @@ abstract class IDaoProfessor {
   Future<Professor> consultarProfessor(int id);
 
   Future<List<Professor>> listarProfessores();
+
+  Future<bool> excluirProfessor(int id);
 }

@@ -20,6 +20,13 @@ class _CadastroDiarioState extends State<CadastroDiario> {
   final TextEditingController _observacoesController = TextEditingController();
   var utils = Utils();
   IDaoDiario iDaoDiario = DaoDiario();
+  late Future<List<DiarioAula>> futureDiarios;
+
+  @override
+  void initState() {
+    super.initState();
+    futureDiarios = DiarioUseCase().listarDiarios(iDaoDiario);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +38,12 @@ class _CadastroDiarioState extends State<CadastroDiario> {
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
       body: FutureBuilder(
-        future: DiarioUseCase().listarDiarios(iDaoDiario),
+        future: futureDiarios,
         builder: (context, AsyncSnapshot<List<DiarioAula>> dados) {
           if (!dados.hasData) {
             return const CircularProgressIndicator();
           } else {
-            var diarios = dados.data!;
+            List<DiarioAula> diarios = dados.data!;
 
             return ListView.builder(
               itemCount: diarios.length,

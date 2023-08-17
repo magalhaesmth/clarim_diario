@@ -1,47 +1,47 @@
-import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_aluno.dart';
-import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
-import 'package:clarim_diario/src/core/infra/ddm/ddm_aluno.dart';
-import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno.dart';
+import 'package:clarim_diario/src/core/infra/ddm/ddm_professor.dart';
 import 'package:flutter/material.dart';
 
-import '../core/aplication/use_case/aluno_use_case.dart';
+import '../core/aplication/interfaces/secundaria/i_dao_professor.dart';
+import '../core/aplication/use_case/professor_use_case.dart';
+import '../core/domain/entity/professor.dart';
+import '../core/infra/sqflite/dao/dao_professor.dart';
 
-class CadastroAluno extends StatefulWidget {
-  const CadastroAluno({Key? key}) : super(key: key);
+class CadastroProfessor extends StatefulWidget {
+  const CadastroProfessor({Key? key}) : super(key: key);
 
   @override
-  State<CadastroAluno> createState() => _CadastroAlunoState();
+  State<CadastroProfessor> createState() => _CadastroProfessorState();
 }
 
-class _CadastroAlunoState extends State<CadastroAluno> {
+class _CadastroProfessorState extends State<CadastroProfessor> {
   final TextEditingController _nomeController = TextEditingController();
-  IDaoAluno daoAluno = DaoAluno();
+  IDaoProfessor daoProfessor = DaoProfessor();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        title: const Text('Alunos'),
+        title: const Text('Professores'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
       body: FutureBuilder(
-        future: AlunoUseCase().listarAluno(daoAluno),
-        builder: (context, AsyncSnapshot<List<Aluno>> dados) {
+        future: ProfessorUseCase().listarProfessor(daoProfessor),
+        builder: (context, AsyncSnapshot<List<Professor>> dados) {
           if (!dados.hasData) {
             return const CircularProgressIndicator();
           } else {
-            List<Aluno> alunos = dados.data!;
+            List<Professor> professores = dados.data!;
 
             return ListView.builder(
-              itemCount: alunos.length,
+              itemCount: professores.length,
               itemBuilder: (context, index) {
-                var alunoAtual = alunos[index];
+                var profAtual = professores[index];
 
-                var aluno = Aluno(
-                  id: alunoAtual.id,
-                  nome: alunoAtual.nome,
+                var prof = Professor(
+                  id: profAtual.id,
+                  nome: profAtual.nome,
                 );
 
                 return Card(
@@ -54,7 +54,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                       vertical: 10.0,
                     ),
                     title: Text(
-                      aluno.nome,
+                      prof.nome,
                       style: const TextStyle(
                         fontSize: 18.0,
                       ),
@@ -65,7 +65,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        DDMAluno().excluirAluno(aluno.id);
+                        DDMProfessor().excluirProfessor(prof.id);
                         setState(() {});
                       },
                     ),
@@ -102,11 +102,11 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         TextFormField(
                           controller: _nomeController,
                           decoration: const InputDecoration(
-                            labelText: 'Nome do Aluno',
+                            labelText: 'Nome do Professor',
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Informe o nome do aluno';
+                              return 'Informe o nome do professor';
                             }
                             return null;
                           },
@@ -116,11 +116,11 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               setState(() {
-                                AlunoUseCase().salvarAluno(
-                                  Aluno(
+                                ProfessorUseCase().salvarProfessor(
+                                  Professor(
                                     nome: _nomeController.text,
                                   ),
-                                  daoAluno,
+                                  daoProfessor,
                                 );
 
                                 _nomeController.clear();
@@ -128,7 +128,7 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                               });
                             }
                           },
-                          child: const Text('Cadastrar Aluno'),
+                          child: const Text('Cadastrar Professor'),
                         ),
                       ],
                     ),

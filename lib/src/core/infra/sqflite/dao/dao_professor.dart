@@ -45,4 +45,13 @@ class DaoProfessor implements IDaoProfessor {
       throw Exception('classe DaoProfessor, método listar');
     } finally {}
   }
+
+  @override
+  Future<bool> excluirProfessor(int id) async {
+    Database db = await Conexao.abrirConexao();
+
+    const sql = 'DELETE FROM professor WHERE id =?';
+    int resultados = await db.rawDelete(sql, [id]);
+    return resultados > 0;
+  }
 }
