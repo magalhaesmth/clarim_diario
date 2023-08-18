@@ -51,6 +51,7 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                 var diarioAtual = diarios[index];
 
                 var diario = DiarioAula(
+                  id: diarioAtual.id,
                   conteudo: diarioAtual.conteudo,
                   observacoes: diarioAtual.observacoes,
                   data: diarioAtual.data,
@@ -108,7 +109,7 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CadastroDiarioAula(),
+                          builder: (context) => CadastroDiarioAula(idDiario: diario.id),
                         ),
                       );
                     },

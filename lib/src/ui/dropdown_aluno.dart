@@ -20,14 +20,14 @@ class DropdownAluno extends StatefulWidget {
 class _DropdownAlunoState extends State<DropdownAluno> {
   @override
   Widget build(BuildContext context) {
-    Aluno alunoSelecionado;
+    Aluno? alunoSelecionado;
 
     return FutureBuilder(
       future: DDMAluno().listarAlunos(),
       builder: (context, AsyncSnapshot<List<Aluno>> dados) {
         var alunos = dados.data;
         return DropdownButtonFormField<Aluno>(
-          value: null,
+          value: alunoSelecionado ?? alunos?[0],
           decoration: const InputDecoration(labelText: 'Selecione um Aluno'),
           validator: widget.validator,
           isExpanded: true,

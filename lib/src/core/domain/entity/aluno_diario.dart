@@ -3,8 +3,8 @@ import 'package:clarim_diario/src/core/domain/entity/diario_aula.dart';
 
 class AlunoDiario {
   late dynamic id;
-  late DiarioAula diarioAula;
-  late Aluno aluno;
+  late dynamic diarioAula;
+  late dynamic aluno;
   late String conceito;
   late String frequencia;
   late String feedback;

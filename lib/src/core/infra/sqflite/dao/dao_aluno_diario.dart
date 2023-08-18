@@ -17,8 +17,8 @@ class DaoAlunoDiario implements IDaoAlunoDiario {
       alunoDiario.conceito,
       alunoDiario.frequencia,
       alunoDiario.feedback,
-      alunoDiario.aluno.id,
-      alunoDiario.diarioAula.id
+      alunoDiario.aluno,
+      alunoDiario.diarioAula,
     ]);
     return linhasAfetadas > 0;
   }
