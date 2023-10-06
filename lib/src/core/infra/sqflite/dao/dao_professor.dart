@@ -8,7 +8,7 @@ class DaoProfessor implements IDaoProfessor {
   Future<bool> salvarProfessor(Professor professor) async {
     Database db = await Conexao.abrirConexao();
     const sql = 'INSERT INTO professor (nome) VALUES (?)';
-    var linhasAfetadas = await db.rawInsert(sql, [professor.nome]);
+    var linhasAfetadas = await db.rawInsert(sql, [professor.nome.trim()]);
     return linhasAfetadas > 0;
   }
 
@@ -44,6 +44,20 @@ class DaoProfessor implements IDaoProfessor {
     } catch (e) {
       throw Exception('classe DaoProfessor, método listar');
     } finally {}
+  }
+
+  @override
+  Future<bool> atualizarProfessor(Professor professor) async {
+    Database db = await Conexao.abrirConexao();
+
+    var sql = 'UPDATE professor SET nome = ? WHERE id = ?';
+
+    var linhasAfetadas = await db.rawUpdate(sql, [
+      professor.nome.trim(),
+      professor.id,
+    ]);
+
+    return linhasAfetadas > 0;
   }
 
   @override

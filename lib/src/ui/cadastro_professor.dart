@@ -16,6 +16,7 @@ class CadastroProfessor extends StatefulWidget {
 class _CadastroProfessorState extends State<CadastroProfessor> {
   final TextEditingController _nomeController = TextEditingController();
   IDaoProfessor daoProfessor = DaoProfessor();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +60,30 @@ class _CadastroProfessorState extends State<CadastroProfessor> {
                         fontSize: 18.0,
                       ),
                     ),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                            ),
+                            onPressed: () {
+                              atualizarProfessor(prof, context, formKey);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              DDMProfessor().excluirProfessor(prof.id);
+                              setState(() {});
+                            },
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        DDMProfessor().excluirProfessor(prof.id);
-                        setState(() {});
-                      },
                     ),
                   ),
                 );
@@ -78,12 +94,10 @@ class _CadastroProfessorState extends State<CadastroProfessor> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            builder: (builder) => Container(
+            builder: (context) => Container(
               padding: const EdgeInsets.only(
                 top: 4.0,
                 left: 30,
@@ -140,6 +154,68 @@ class _CadastroProfessorState extends State<CadastroProfessor> {
         },
         tooltip: 'Adicionar',
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Future<Widget?> atualizarProfessor(
+    Professor professor,
+    BuildContext context,
+    GlobalKey<FormState> formKey,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        padding: const EdgeInsets.only(
+          top: 4.0,
+          left: 30,
+          right: 30,
+          bottom: 30,
+        ),
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: professor.nome,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome do Professor',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe o nome do professor';
+                      } else {
+                        professor.nome = value;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          ProfessorUseCase().atualizarProfessor(
+                            professor,
+                            daoProfessor,
+                          );
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    child: const Text('Atualizar Professor'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

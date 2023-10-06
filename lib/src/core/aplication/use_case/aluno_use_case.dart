@@ -14,6 +14,10 @@ class AlunoUseCase {
     return iDaoAluno.listarAlunos();
   }
 
+  atualizarAluno(Aluno aluno, IDaoAluno iDaoAluno) {
+    return iDaoAluno.atualizarAluno(aluno);
+  }
+
   excluirAluno(int id, IDaoAluno iDaoAluno) {
     iDaoAluno.excluirAluno(id);
   }

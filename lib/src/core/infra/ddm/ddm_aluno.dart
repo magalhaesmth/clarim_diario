@@ -20,6 +20,11 @@ class DDMAluno implements IEntradaAluno {
   }
 
   @override
+  atualizarAluno(Aluno aluno) {
+    useCase.atualizarAluno(aluno, daoAluno);
+  }
+
+  @override
   excluirAluno(int id) {
     useCase.excluirAluno(id, daoAluno);
   }

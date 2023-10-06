@@ -7,5 +7,7 @@ abstract class IDaoAluno {
 
   Future<List<Aluno>> listarAlunos();
 
+  Future<bool> atualizarAluno(Aluno aluno);
+
   Future<bool> excluirAluno(int id);
 }

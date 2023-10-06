@@ -26,6 +26,11 @@ class DDMProfessor implements IEntradaProfessor {
   }
 
   @override
+  atualizarProfessor(Professor professor) {
+    return useCase.atualizarProfessor(professor, daoAluno);
+  }
+
+  @override
   consultarProfessor(int id) {
     return useCase.consultarProfessor(id, daoAluno);
   }

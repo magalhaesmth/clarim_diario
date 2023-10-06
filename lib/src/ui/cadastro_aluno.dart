@@ -16,6 +16,7 @@ class CadastroAluno extends StatefulWidget {
 class _CadastroAlunoState extends State<CadastroAluno> {
   final TextEditingController _nomeController = TextEditingController();
   IDaoAluno daoAluno = DaoAluno();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +60,30 @@ class _CadastroAlunoState extends State<CadastroAluno> {
                         fontSize: 18.0,
                       ),
                     ),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                            ),
+                            onPressed: () {
+                              atualizarAluno(aluno, context, formKey);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              DDMAluno().excluirAluno(aluno.id);
+                              setState(() {});
+                            },
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        DDMAluno().excluirAluno(aluno.id);
-                        setState(() {});
-                      },
                     ),
                   ),
                 );
@@ -78,12 +94,10 @@ class _CadastroAlunoState extends State<CadastroAluno> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            builder: (builder) => Container(
+            builder: (context) => Container(
               padding: const EdgeInsets.only(
                 top: 4.0,
                 left: 30,
@@ -140,6 +154,65 @@ class _CadastroAlunoState extends State<CadastroAluno> {
         },
         tooltip: 'Adicionar',
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Future<Widget?> atualizarAluno(
+    Aluno aluno,
+    BuildContext context,
+    GlobalKey<FormState> formKey,
+  ) {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        padding: const EdgeInsets.only(
+          top: 4.0,
+          left: 30,
+          right: 30,
+          bottom: 30,
+        ),
+        child: Form(
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: aluno.nome,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome do Aluno',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe o nome do aluno';
+                      } else {
+                        aluno.nome = value;
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        setState(() {
+                          DDMAluno().atualizarAluno(aluno);
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    child: const Text('Atualizar Aluno'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

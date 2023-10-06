@@ -47,6 +47,20 @@ class DaoAluno implements IDaoAluno {
   }
 
   @override
+  Future<bool> atualizarAluno(Aluno aluno) async {
+    Database db = await Conexao.abrirConexao();
+
+    var sql = 'UPDATE aluno SET nome = ? WHERE id = ?';
+
+    var linhasAfetadas = await db.rawUpdate(sql, [
+      aluno.nome.trim(),
+      aluno.id,
+    ]);
+
+    return linhasAfetadas > 0;
+  }
+
+  @override
   Future<bool> excluirAluno(int id) async {
     Database db = await Conexao.abrirConexao();
 

@@ -14,6 +14,10 @@ class ProfessorUseCase {
     return iDaoProfessor.listarProfessores();
   }
 
+  atualizarProfessor(Professor professor, IDaoProfessor iDaoProfessor) {
+    iDaoProfessor.atualizarProfessor(professor);
+  }
+
   excluirProfessor(int id, IDaoProfessor iDaoProfessor) {
     iDaoProfessor.excluirProfessor(id);
   }
