@@ -27,7 +27,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
   @override
   void initState() {
     super.initState();
-    futureDiarios = AlunoDiarioUseCase().listarAluno(daoAlunoDiario);
+    futureDiarios = AlunoDiarioUseCase().listarAlunoDiario(daoAlunoDiario);
   }
 
   @override
@@ -72,9 +72,9 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                       horizontal: 20.0,
                       vertical: 10.0,
                     ),
-                    title: Text(
+                    title: const Text(
                       'Andrey',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),

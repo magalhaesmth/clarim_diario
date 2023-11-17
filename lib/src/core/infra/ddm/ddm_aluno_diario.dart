@@ -17,16 +17,16 @@ class DDMAlunoDiario implements IEntradaAlunoDiario {
 
   @override
   cadastrarAlunoDiario(AlunoDiario alunoDiario) {
-    useCase.salvarAluno(alunoDiario, daoAluno);
+    useCase.salvarAlunoDiario(alunoDiario, daoAluno);
   }
 
   @override
   listarAlunosDiario() {
-    return useCase.listarAluno(daoAluno);
+    return useCase.listarAlunoDiario(daoAluno);
   }
 
   @override
   consultarAlunoDiario(int id) {
-    useCase.consultarAluno(id, daoAluno);
+    useCase.consultarAlunoDiario(id, daoAluno);
   }
 }

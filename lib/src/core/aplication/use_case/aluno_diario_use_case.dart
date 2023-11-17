@@ -2,15 +2,15 @@ import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_al
 import 'package:clarim_diario/src/core/domain/entity/aluno_diario.dart';
 
 class AlunoDiarioUseCase {
-  salvarAluno(AlunoDiario alunoDiario, IDaoAlunoDiario iDaoAlunoDiario) {
+  salvarAlunoDiario(AlunoDiario alunoDiario, IDaoAlunoDiario iDaoAlunoDiario) {
     iDaoAlunoDiario.salvarAlunoDiario(alunoDiario);
   }
 
-  consultarAluno(int id, IDaoAlunoDiario iDaoAlunoDiario) {
+  consultarAlunoDiario(int id, IDaoAlunoDiario iDaoAlunoDiario) {
     iDaoAlunoDiario.consultarAlunoDiario(id);
   }
 
-  listarAluno(IDaoAlunoDiario iDaoAlunoDiario) {
+  listarAlunoDiario(IDaoAlunoDiario iDaoAlunoDiario) {
     return iDaoAlunoDiario.listarDiariosAula();
   }
 }
