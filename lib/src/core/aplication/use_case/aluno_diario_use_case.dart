@@ -10,7 +10,7 @@ class AlunoDiarioUseCase {
     iDaoAlunoDiario.consultarAlunoDiario(id);
   }
 
-  listarAlunoDiario(IDaoAlunoDiario iDaoAlunoDiario) {
+  Future<List<AlunoDiario>>listarAlunoDiario(IDaoAlunoDiario iDaoAlunoDiario) {
     return iDaoAlunoDiario.listarDiariosAula();
   }
 }

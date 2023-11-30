@@ -1,10 +1,12 @@
 import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_diario.dart';
 import 'package:clarim_diario/src/core/aplication/use_case/diario_use_case.dart';
 import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_diario.dart';
+import 'package:clarim_diario/src/ui/dropdown_professor.dart';
 import 'package:flutter/material.dart';
 
 import '../core/domain/entity/diario_aula.dart';
 import '../core/domain/entity/professor.dart';
+import '../core/infra/ddm/ddm_professor.dart';
 import '../core/infra/utils.dart';
 import 'cadastro_diario_aula.dart';
 
@@ -21,15 +23,37 @@ class _CadastroDiarioState extends State<CadastroDiario> {
   var utils = Utils();
   IDaoDiario iDaoDiario = DaoDiario();
   late Future<List<DiarioAula>> futureDiarios;
+  Professor? professorSelecionado;
+  List<Professor> professores = [];
+  final _dropdownController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    futureDiarios = DiarioUseCase().listarDiarios(iDaoDiario);
+  Widget DropdownProfessor1() {
+    return FutureBuilder(
+      future: DDMProfessor().listarProfessores(),
+      builder: (context, AsyncSnapshot<List<Professor>> dados) {
+        var professores = dados.data;
+        return DropdownButtonFormField<Professor>(
+          value: professorSelecionado ?? professores?[0],
+          isExpanded: true,
+          decoration:
+              const InputDecoration(labelText: 'Selecione um Professor'),
+          items: professores!
+              .map<DropdownMenuItem<Professor>>((Professor professor) {
+            return DropdownMenuItem<Professor>(
+                value: professor, child: Text(professor.nome));
+          }).toList(),
+          onChanged: (cliente) {
+            ///nomeTreino = treino!.nome;
+            professorSelecionado = cliente;
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    futureDiarios = DiarioUseCase().listarDiarios(iDaoDiario);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
@@ -109,7 +133,8 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CadastroDiarioAula(idDiario: diario.id),
+                          builder: (context) =>
+                              CadastroDiarioAula(idDiario: diario.id),
                         ),
                       );
                     },
@@ -143,10 +168,30 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                     ),
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: DropdownProfessor(
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Selecione uma opção!';
+                                } else {
+                                  _dropdownController.text =
+                                      value.id.toString();
+                                }
+                                return null;
+                              },
+                              onBrandChanged: (value) {
+                                _dropdownController.text = value.id.toString();
+                              },
+                            ),
+                          ),
+                        ),
                         TextFormField(
                           controller: _conteudoController,
                           decoration: const InputDecoration(
-                            labelText: 'Conteúdo',
+                            labelText: 'Conteudo',
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -170,10 +215,7 @@ class _CadastroDiarioState extends State<CadastroDiario> {
                                 conteudo: _conteudoController.text,
                                 observacoes: _observacoesController.text,
                                 data: DateTime.now(),
-                                professor: Professor(
-                                  id: 1,
-                                  nome: '',
-                                ),
+                                professor: _dropdownController.text,
                               );
 
                               DiarioUseCase().salvarDiario(diario, iDaoDiario);

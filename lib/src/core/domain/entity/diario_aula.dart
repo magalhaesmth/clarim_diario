@@ -2,7 +2,7 @@ import 'package:clarim_diario/src/core/domain/entity/professor.dart';
 
 class DiarioAula {
   late dynamic id;
-  late Professor professor;
+  late dynamic professor;
   late String conteudo;
   late String? observacoes;
   late DateTime data;

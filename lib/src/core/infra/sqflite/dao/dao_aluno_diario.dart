@@ -68,4 +68,13 @@ class DaoAlunoDiario implements IDaoAlunoDiario {
       throw Exception('classe DaoLocacao, método listar');
     } finally {}
   }
+
+  @override
+  Future<bool> excluirAlunoDiario(int id) async {
+    Database db = await Conexao.abrirConexao();
+
+    const sql = 'DELETE FROM alunoDiario WHERE id =?';
+    int resultados = await db.rawDelete(sql, [id]);
+    return resultados > 0;
+  }
 }

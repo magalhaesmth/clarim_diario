@@ -11,7 +11,7 @@ class Conexao {
     //databaseFactory = databaseFactoryFfi;
     if (_db == null) {
       String caminho = join(await getDatabasesPath(), 'banco.db');
-      // deleteDatabase(caminho);
+      //deleteDatabase(caminho);
       _db = await openDatabase(
         caminho,
         version: 1,

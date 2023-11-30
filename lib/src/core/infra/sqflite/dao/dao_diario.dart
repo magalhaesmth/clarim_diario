@@ -17,7 +17,7 @@ class DaoDiario implements IDaoDiario {
       diarioAula.conteudo,
       diarioAula.observacoes,
       diarioAula.data.toString(),
-      diarioAula.professor.id
+      diarioAula.professor
     ]);
     return linhasAfetadas > 0;
   }
@@ -37,7 +37,7 @@ class DaoDiario implements IDaoDiario {
           data: DateFormat('yyyy-MM-dd').parse(resultado['data'].toString()),
           professor: await DaoProfessor()
               .consultarProfessor(resultado['professor_id'] as int));
-              print("Deu certo");
+      print("Deu certo");
       return diarioAula;
     } catch (e) {
       throw Exception('classe TreinoDAO, método consultar');

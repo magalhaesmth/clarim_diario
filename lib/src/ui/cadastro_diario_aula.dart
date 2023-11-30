@@ -1,11 +1,14 @@
 import 'package:clarim_diario/src/core/aplication/interfaces/secundaria/i_dao_aluno_diario.dart';
 import 'package:clarim_diario/src/core/aplication/use_case/aluno_diario_use_case.dart';
+import 'package:clarim_diario/src/core/domain/entity/aluno.dart';
 import 'package:clarim_diario/src/core/infra/ddm/ddm_aluno_diario.dart';
+import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno.dart';
 import 'package:clarim_diario/src/core/infra/sqflite/dao/dao_aluno_diario.dart';
 import 'package:clarim_diario/src/ui/dropdown_aluno.dart';
 import 'package:flutter/material.dart';
 
 import '../core/domain/entity/aluno_diario.dart';
+import '../core/infra/ddm/ddm_aluno.dart';
 
 class CadastroDiarioAula extends StatefulWidget {
   dynamic idDiario;
@@ -23,12 +26,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
   final _dropdownController = TextEditingController();
   IDaoAlunoDiario daoAlunoDiario = DaoAlunoDiario();
   late Future<List<AlunoDiario>> futureDiarios;
-
-  @override
-  void initState() {
-    super.initState();
-    futureDiarios = AlunoDiarioUseCase().listarAlunoDiario(daoAlunoDiario);
-  }
+  Aluno? alunoSelecionado;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
         backgroundColor: const Color.fromARGB(255, 117, 255, 104),
       ),
       body: FutureBuilder(
-        future: futureDiarios,
+        future: AlunoDiarioUseCase().listarAlunoDiario(daoAlunoDiario),
         builder: (context, AsyncSnapshot<List<AlunoDiario>> dados) {
           if (!dados.hasData) {
             return const CircularProgressIndicator();
@@ -51,16 +49,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
               itemCount: diarios.length,
               itemBuilder: (context, index) {
                 var diarioAtual = diarios[index];
-
-                var diario = AlunoDiario(
-                  id: diarioAtual.id,
-                  aluno: diarioAtual.aluno,
-                  conceito: diarioAtual.conceito,
-                  diarioAula: diarioAtual.diarioAula,
-                  feedback: diarioAtual.feedback,
-                  frequencia: diarioAtual.frequencia,
-                );
-
+                var aluno = diarioAtual.aluno as Aluno;
                 return Card(
                   elevation: 2.0,
                   margin: const EdgeInsets.symmetric(
@@ -72,15 +61,15 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                       horizontal: 20.0,
                       vertical: 10.0,
                     ),
-                    title: const Text(
-                      'Andrey',
+                    title: Text(
+                      aluno.nome,
                       style: TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     subtitle: Text(
-                      'Freq.: ${diario.frequencia}\nFeedback: ${diario.feedback}',
+                      'Freq.: ${diarioAtual.frequencia}\nFeedback: ${diarioAtual.feedback}',
                     ),
                     trailing: SizedBox(
                       width: 100,
@@ -89,8 +78,9 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                           Icons.delete,
                           color: Colors.red,
                         ),
-                        onPressed: () => {
-                          //TODO fazer com que antes de excluir o diário, seja excluído o diário de aula
+                        onPressed: () {
+                          DaoAlunoDiario().excluirAlunoDiario(diarioAtual.id);
+                          setState(() {});
                         },
                       ),
                     ),
@@ -99,7 +89,7 @@ class _CadastroDiarioAulaState extends State<CadastroDiarioAula> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CadastroDiarioAula(idDiario: diario.id),
+                              CadastroDiarioAula(idDiario: diarioAtual.id),
                         ),
                       );
                     },
